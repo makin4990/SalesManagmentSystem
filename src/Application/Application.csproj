@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\CoreFramework\CoreFramework.Application\CoreFramework.Application.csproj" />
     <ProjectReference Include="..\..\CoreFramework\CoreFramework.CrossCuttingConsern\CoreFramework.CrossCuttingConsern\CoreFramework.CrossCuttingConsern.csproj" />
     <ProjectReference Include="..\..\CoreFramework\CoreFramework.Security\CoreFramework.Security.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>
