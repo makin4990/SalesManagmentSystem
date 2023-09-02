@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+	  <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CoreFramework\CoreFramework.Application\CoreFramework.Application.csproj" />
+    <ProjectReference Include="..\..\CoreFramework\CoreFramework.CrossCuttingConsern\CoreFramework.CrossCuttingConsern\CoreFramework.CrossCuttingConsern.csproj" />
+    <ProjectReference Include="..\..\CoreFramework\CoreFramework.Security\CoreFramework.Security.csproj" />
+  </ItemGroup>
+
+</Project>
