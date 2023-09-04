@@ -14,10 +14,10 @@ namespace Persistence.Contexts
     public class SmsDbContext : DbContext
     {
         protected IConfiguration Configuration { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<OperationClaim> OperationClaims { get; set; }
-        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        //public DbSet<User> Users { get; set; }
+        //public DbSet<OperationClaim> OperationClaims { get; set; }
+        //public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        //public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
         public SmsDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
