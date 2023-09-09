@@ -1,4 +1,4 @@
-﻿using Application.Features.Auths.Rules;
+﻿//using Application.Features.Auths.Rules;
 using Application.Services.AuthService;
 using CoreFramework.Application.Pipelines.Authorization;
 using CoreFramework.Application.Pipelines.Caching;
@@ -27,7 +27,7 @@ namespace Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
-            services.AddScoped<AuthBusinessRules>();
+            //services.AddScoped<AuthBusinessRules>();
             services.AddScoped<IAuthService, AuthManager>();
 
 

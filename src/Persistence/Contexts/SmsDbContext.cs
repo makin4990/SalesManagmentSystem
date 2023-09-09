@@ -1,4 +1,6 @@
 ﻿using CoreFramework.Security.Entities;
+using Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NetTopologySuite.Geometries;
@@ -8,10 +10,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using User = Domain.Entities.User;
 
 namespace Persistence.Contexts
 {
-    public class SmsDbContext : DbContext
+    public class SmsDbContext : IdentityDbContext<User,Role,int>
     {
         protected IConfiguration Configuration { get; set; }
         //public DbSet<User> Users { get; set; }
@@ -31,7 +34,7 @@ namespace Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<Location>(a =>
             //{
             //    a.ToTable("Locations").HasKey(k => k.Id);

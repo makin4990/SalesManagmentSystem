@@ -1,14 +1,10 @@
-﻿using CoreFramework.Persistence.Repositories;
-using CoreFramework.Security.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Entities;
+using CoreFramework.Persistence.Repositories;
 
 namespace Application.Services.Repositories
 {
-    public interface IUserRepository : IAsyncRepository<User>, IRepository<User>
-    {
-    }
+    //public interface IUserRepository : IAsyncRepository<User>, IRepository<User>
+    //{
+    //}
 }
+
