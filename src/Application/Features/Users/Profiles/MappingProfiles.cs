@@ -1,10 +1,10 @@
 using AutoMapper;
-using Application.Features.Users.Commands.CreateUser;
 using Application.Features.Users.Dtos;
 using Application.Features.Users.Models;
-using Application.Features.Users.Commands.UpdateUser;
 using Domain.Entities;
 using CoreFramework.Persistence.Paging;
+using Application.Features.Auths.Commands.CreateUser;
+using Application.Features.Auths.Commands.UpdateUser;
 
 namespace Application.Features.Users.Profiles;
 

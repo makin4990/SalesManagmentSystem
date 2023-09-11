@@ -7,6 +7,9 @@ using Infrastructure;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using CoreFramework.Mailing;
+using System.Reflection;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,23 +19,12 @@ builder.Services.AddControllers();
 builder.Services.AddApplicationServices();
 builder.Services.AddSecurityServices();
 builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddMailingServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
-TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidIssuer = tokenOptions.Issuer,
-        ValidAudience = tokenOptions.Audience,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
-    };
-});
+
 
 builder.Services.AddSwaggerGen(opt =>
 {

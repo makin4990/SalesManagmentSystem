@@ -1,11 +1,12 @@
 using AutoMapper;
-using Application.Features.Users.Dtos;
+using Application.Features.Auths.Dtos;
 using Application.Services.Repositories;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Application.Services.AuthService;
 
-namespace Application.Features.Users.Commands.CreateUser;
+namespace Application.Features.Auths.Commands.CreateUser;
 
 public class CreateUserCommand:IRequest<CreateUserDto>
 {
@@ -21,23 +22,20 @@ public class CreateUserCommand:IRequest<CreateUserDto>
 }
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserDto>
 {
-    private readonly UserManager<User> _userManager;
+    private readonly IUserService _userService;
     private readonly IMapper _mapper;
-    //private readonly UserBusinessRules _userBusinessRules;
 
-    public CreateUserCommandHandler(IMapper mapper, UserManager<User> userManager)
+    public CreateUserCommandHandler(IMapper mapper, IUserService userService)
     {
         _mapper = mapper;
-        _userManager = userManager;
+        _userService = userService;
     }
 
     public async Task<CreateUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        User mappedUser = _mapper.Map<User>(request);
-        IdentityResult createdUser = await _userManager.CreateAsync(mappedUser);
-        if (!createdUser.Succeeded)
-            return null;
-        CreateUserDto createdUserDto = _mapper.Map<CreateUserDto>(mappedUser);
-        return createdUserDto;
+        var createdUser = await _userService.CreateAsync(request);
+        if (createdUser is  null)
+            return new();
+        return createdUser;
     }
 }

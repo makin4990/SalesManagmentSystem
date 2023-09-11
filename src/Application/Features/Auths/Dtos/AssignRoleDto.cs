@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Auths.Dtos
+namespace Application.Features.Auths.Dtos;
+
+public class AssignRoleDto
 {
-    public class RegisteredDto : RefreshedTokenDto
-    {
-        //
-    }
 }

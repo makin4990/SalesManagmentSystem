@@ -1,5 +1,5 @@
-using Application.Features.Users.Commands.CreateUser;
-using Application.Features.Users.Commands.UpdateUser;
+using Application.Features.Auths.Commands.CreateUser;
+using Application.Features.Auths.Commands.UpdateUser;
 using Application.Features.Users.Dtos;
 using Application.Features.Users.Models;
 using Application.Features.Users.Queries.GetListUser;
@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateUserCommand createUserCommand)
         {
-            CreateUserDto result = await Mediator.Send(createUserCommand);
+            var result = await Mediator.Send(createUserCommand);
             return Created("", result);
         }
 
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         [HttpPost("Update")]
         public async Task<ActionResult> Update([FromQuery] UpdateUserCommand updateUserCommand)
         {
-            UpdateUserDto result = await Mediator.Send(updateUserCommand);
+            var result = await Mediator.Send(updateUserCommand);
             return Ok(result);
 
         }

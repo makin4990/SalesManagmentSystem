@@ -1,4 +1,3 @@
-using CoreFramework.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities;
