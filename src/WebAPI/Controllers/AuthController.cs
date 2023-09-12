@@ -1,9 +1,12 @@
-﻿using Application.Features.Auths.Commands.LoginUser;
+﻿using Application.CustomAttributes;
+using Application.Enums;
+using Application.Features.Auths.Commands.LoginUser;
 using Application.Features.Auths.Commands.PasswordReset;
 using Application.Features.Auths.Commands.RefreshTokenLogin;
 using Application.Features.Auths.Commands.VerifyResetToken;
 using Application.Features.Auths.Dtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -31,6 +34,8 @@ public class AuthController : BaseController
         return Ok(response);
     }
 
+    [Authorize(AuthenticationSchemes = "Admin")]
+    [AuthorizeDefinition(Menu ="", ActionType = ActionType.Reading, Definition = "Get All Orders")]
     [HttpPost("password-reset")]
     public async Task<IActionResult> PasswordReset([FromBody] PasswordResetCommand passwordResetCommandRequest)
     {

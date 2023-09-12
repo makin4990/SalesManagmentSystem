@@ -2,14 +2,17 @@
 
 namespace WebUI.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         public IActionResult Forgot()
         {
             return View();
         }
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            object data = new { usernameOrEmail = "Mstring", password = "Mstring.123" };
+            var result = await _client.PostAsync<object>(@"api/Auth/login", data);
+
             return View();
         }
         public IActionResult Logout()

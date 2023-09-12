@@ -1,15 +1,14 @@
-﻿using CoreFramework.Security.Encryption;
-using CoreFramework.Security.JWT;
+﻿using Application;
 using CoreFramework.Application;
-using Application;
-using Persistence;
+using CoreFramework.Mailing;
 using Infrastructure;
-using Microsoft.OpenApi.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using CoreFramework.Mailing;
+using Microsoft.OpenApi.Models;
+using Persistence;
+using Serilog.Context;
 using System.Reflection;
-using MediatR;
 using System.Security.Claims;
 using System.Text;
 using WebAPI.Filters;
@@ -26,6 +25,9 @@ builder.Services.AddMailingServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
+    policy.WithOrigins("http://localhost:5041", "https://localhost:7123").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
+));
 
 
 
@@ -72,8 +74,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true, //Oluþturulan token deðerinin süresini kontrol edecek olan doðrulamadýr.
             ValidateIssuerSigningKey = true, //Üretilecek token deðerinin uygulamamýza ait bir deðer olduðunu ifade eden suciry key verisinin doðrulanmasýdýr.
 
-            ValidAudience = builder.Configuration["Token:Audience"],
-            ValidIssuer = builder.Configuration["Token:Issuer"],
+            ValidAudience = builder.Configuration["TokenOptions:Audience"],
+            ValidIssuer = builder.Configuration["TokenOptions:Issuer"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenOptions:SecurityKey"])),
             LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => expires != null ? expires > DateTime.UtcNow : false,
 
@@ -94,6 +96,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.Use(async (context, next) =>
+{
+    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
+    LogContext.PushProperty("user_name", username);
+    await next();
+});
+
 
 app.MapControllers();
 

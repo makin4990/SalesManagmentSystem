@@ -1,7 +1,13 @@
+using WebUI.Helpers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ClientProxyHelper>();
+builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 

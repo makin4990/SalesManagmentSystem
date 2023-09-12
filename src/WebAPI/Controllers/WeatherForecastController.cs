@@ -1,4 +1,5 @@
 using Infrastructure.Services.Slack;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SlackAPI;
 
@@ -6,6 +7,7 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes ="Admin")]
     public class WeatherForecastController : BaseController
     {
         private readonly ISlackService _slackService;
