@@ -9,6 +9,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 
 
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
