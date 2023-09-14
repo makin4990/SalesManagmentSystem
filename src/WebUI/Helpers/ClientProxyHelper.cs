@@ -22,7 +22,7 @@ namespace WebUI.Helpers
             var response = await _httpClient.GetAsync(endpoint);
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<T>();
+            return await response?.Content?.ReadFromJsonAsync<T>();
         }
 
         public async Task<T> PostAsync<T>(string endpoint, object data)

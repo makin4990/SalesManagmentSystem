@@ -34,8 +34,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
     public async Task<CreateUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var createdUser = await _userService.CreateAsync(request);
-        if (createdUser is  null)
-            return new();
+        if (createdUser is null)
+            throw new Exception();
         return createdUser;
     }
 }

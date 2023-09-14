@@ -1,19 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Text;
+using WebUI.Models.Accounts.Login;
+using WebUI.Models.Accounts.Register;
 
 namespace WebUI.Controllers
 {
     public class AccountController : BaseController
     {
+        HttpClient _httpClient;
+        IConfiguration _configuration;
+
+        public AccountController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        {
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress= new Uri(configuration["ApiBaseURL"]);
+        }
+
         public IActionResult Forgot()
         {
             return View();
         }
         public async Task<IActionResult> Login()
         {
-            object data = new { usernameOrEmail = "Mstring", password = "Mstring.123" };
-            var result = await _client.PostAsync<object>(@"api/Auth/login", data);
+            var loginModel = new UserLoginDto();
+            return View(loginModel);
+        }
 
-            return View();
+        [HttpPost]
+        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+        {
+            LoginResponseModel loginResponse = await _client.PostAsync<LoginResponseModel>(@"api/Auth/login", userLoginDto);
+            try
+            {
+
+                if (loginResponse.Token is not null)
+                {
+                    var token = loginResponse.Token;
+
+                    HttpContext.Session.SetString("SMS.Auth.Token", token.AccessToken);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+            return RedirectToAction("Index","Home");
         }
         public IActionResult Logout()
         {
@@ -21,7 +57,28 @@ namespace WebUI.Controllers
         }
         public IActionResult Register()
         {
-            return View();
+            RegisterUserDto registerModel = new();
+            return View(registerModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterUserDto registerUserDto)
+        {
+            try
+            {
+                var result = await _client.PostAsync<RegisterUserResponse>(@"api/users", registerUserDto);
+                if(result is not null)
+                {
+                    return RedirectToAction("Index","Home");
+
+                }
+                return View(registerUserDto);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
     }
 }

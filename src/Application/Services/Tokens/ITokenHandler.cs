@@ -10,7 +10,7 @@ namespace Application.Services.Tokens
 {
     public interface ITokenHandler
     {
-        Token CreateAccessToken(int second, User user);
+        Task<Token> CreateAccessToken(int second, User user);
         string CreateRefreshToken();
     }
 }

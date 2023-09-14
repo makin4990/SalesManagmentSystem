@@ -1,7 +1,8 @@
 ﻿@{
     Layout = null;
 }
-
+@using WebUI.Models.Accounts.Login
+@model UserLoginDto
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,10 +54,10 @@
                                         </p>
 
                                         <!-- form -->
-                                        <form action="#">
+                                        <form method="post" asp-controller="Account" asp-action="Login">
                                             <div class="mb-3">
-                                                <label for="emailaddress" class="form-label">Email address</label>
-                                                <input class="form-control" type="email" id="emailaddress" required=""
+                                                <label class="form-label">Email address</label>
+                                                <input class="form-control" type="email" asp-for="@Model.UsernameOrEmail" name="UsernameOrEmail" id="emailaddress" required=""
                                                        placeholder="Enter your email">
                                             </div>
                                             <div class="mb-3">
@@ -67,8 +68,8 @@
                                                         password?
                                                     </small>
                                                 </a>
-                                                <label for="password" class="form-label">Password</label>
-                                                <input class="form-control" type="password" required="" id="password"
+                                                <label class="form-label">Password</label>
+                                                <input class="form-control" type="password" asp-for="@Model.Password" name="Password" required="" id="password"
                                                        placeholder="Enter your password">
                                             </div>
                                             <div class="mb-3">

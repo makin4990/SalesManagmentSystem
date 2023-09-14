@@ -39,7 +39,7 @@ public class MailKitMailService : IMailService
 
         using SmtpClient smtp = new();
         smtp.Connect(_mailSettings.Server, _mailSettings.Port);
-        //smtp.Authenticate(_mailSettings.UserName, _mailSettings.Password);
+        smtp.Authenticate(_mailSettings.UserName, _mailSettings.Password);
         smtp.Send(email);
         smtp.Disconnect(true);
     }

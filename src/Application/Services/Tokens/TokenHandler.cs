@@ -1,9 +1,11 @@
 ﻿using Application.Features.Auths.Dtos;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -16,13 +18,15 @@ namespace Application.Services.Tokens;
 public class TokenHandler : ITokenHandler
 {
     readonly IConfiguration _configuration;
+    private readonly UserManager<User> _userManager;
 
-    public TokenHandler(IConfiguration configuration)
+    public TokenHandler(IConfiguration configuration, UserManager<User> userManager)
     {
         _configuration = configuration;
+        _userManager = userManager;
     }
 
-    public Token CreateAccessToken(int second, User user)
+    public async Task<Token> CreateAccessToken(int second, User user)
     {
         Token token = new();
 
@@ -33,6 +37,18 @@ public class TokenHandler : ITokenHandler
         SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
         //Oluşturulacak token ayarlarını veriyoruz.
+        var userClaims = new List<Claim> { new(ClaimTypes.Name, user.UserName) };
+        var userRoles =await _userManager.GetRolesAsync(user);
+        userClaims.Add(new(ClaimTypes.Role, "HasToken"));
+        if (userRoles.Any())
+        {
+            foreach (var role in userRoles)
+            {
+                userClaims.Add(new(ClaimTypes.Role, role));
+            }
+
+        }
+
         token.Expiration = DateTime.UtcNow.AddSeconds(second);
         JwtSecurityToken securityToken = new(
             audience: _configuration["TokenOptions:Audience"],
@@ -40,14 +56,13 @@ public class TokenHandler : ITokenHandler
             expires: token.Expiration,
             notBefore: DateTime.UtcNow,
             signingCredentials: signingCredentials,
-            claims: new List<Claim> { new(ClaimTypes.Name, user.UserName) }
+            claims: userClaims
             );
 
         //Token oluşturucu sınıfından bir örnek alalım.
         JwtSecurityTokenHandler tokenHandler = new();
         token.AccessToken = tokenHandler.WriteToken(securityToken);
 
-        //string refreshToken = CreateRefreshToken();
 
         token.RefreshToken = CreateRefreshToken();
         return token;

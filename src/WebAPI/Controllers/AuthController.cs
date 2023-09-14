@@ -34,8 +34,6 @@ public class AuthController : BaseController
         return Ok(response);
     }
 
-    [Authorize(AuthenticationSchemes = "Admin")]
-    [AuthorizeDefinition(Menu ="", ActionType = ActionType.Reading, Definition = "Get All Orders")]
     [HttpPost("password-reset")]
     public async Task<IActionResult> PasswordReset([FromBody] PasswordResetCommand passwordResetCommandRequest)
     {

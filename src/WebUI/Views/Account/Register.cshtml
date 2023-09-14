@@ -1,6 +1,8 @@
 ﻿@{
     Layout = null;
 }
+@using WebUI.Models.Accounts.Register
+@model RegisterUserDto
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,21 +55,36 @@
                                         </p>
 
                                         <!-- form -->
-                                        <form action="#">
+                                        <form method="post" asp-controller="Account" asp-action="Register">
                                             <div class="mb-3">
-                                                <label for="fullname" class="form-label">Full Name</label>
-                                                <input class="form-control" type="text" id="fullname"
+                                                <label for="fullname" class="form-label">Name</label>
+                                                <input asp-for="@Model.UserName" name="UserName" class="form-control" type="text" id="fullname"
+                                                       placeholder="Enter your name" required="">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="fullname" class="form-label">Name</label>
+                                                <input asp-for="@Model.Name" name="Name" class="form-control" type="text" id="fullname"
+                                                       placeholder="Enter your name" required="">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="fullname" class="form-label">Name</label>
+                                                <input asp-for="@Model.SurName" name="SurName" class="form-control" type="text" id="fullname"
                                                        placeholder="Enter your name" required="">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="emailaddress" class="form-label">Email address</label>
-                                                <input class="form-control" type="email" id="emailaddress" required=""
+                                                <input class="form-control" asp-for="@Model.Email" name="Email"  type="email" id="emailaddress" required=""
                                                        placeholder="Enter your email">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="password" class="form-label">Password</label>
-                                                <input class="form-control" type="password" required="" id="password"
+                                                <input class="form-control" asp-for="@Model.Password" name="Password" type="password" required="" id="password"
                                                        placeholder="Enter your password">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="password" class="form-label">Password</label>
+                                                <input class="form-control" asp-for="@Model.PasswordConfirm" name="PasswordConfirm" type="password" required="" id="password"
+                                                       placeholder="Enter your password again">
                                             </div>
                                             <div class="mb-3">
                                                 <div class="form-check">

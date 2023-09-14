@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebUI.Models;
 
 namespace WebUI.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Admin", Roles = "HasToken")]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
