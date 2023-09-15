@@ -15,7 +15,10 @@
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <link rel="stylesheet" href="/assets/vendor/jquery-toast-plugin/jquery.toast.min.css">
 
+    @*    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" /> *@
     <!-- Theme Config Js -->
     <script src="/assets/js/config.js"></script>
 
@@ -83,7 +86,7 @@
                                                 </div>
                                             </div>
                                             <div class="mb-0 text-start">
-                                                <button class="btn btn-soft-primary w-100" type="submit">
+                                                <button class="btn btn-soft-primary w-100" type="submit" id="qtoastr-four">
                                                     <i class="ri-login-circle-fill me-1"></i> <span class="fw-bold">
                                                         Log
                                                         In
@@ -140,8 +143,27 @@
     <!-- Vendor js -->
     <script src="/assets/js/vendor.min.js"></script>
 
+    <script src="/assets/vendor/jquery-toast-plugin/jquery.toast.min.js"></script>
+
+    <!-- Toastr Demo js -->
+    <script src="/assets/js/pages/toastr.init.js"></script>
+    @if (TempData["Message"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                var header = '@TempData["Header"]';
+                var message = '@TempData["Message"]';
+                var type = '@TempData["Type"]';
+                var position = '@TempData["Position"]';
+                $.NotificationApp.send(header, message, 'top-right', 'rgba(59,192,195,1)', type);
+
+            });
+        </script>
+    }
+
     <!-- App js -->
     <script src="/assets/js/app.min.js"></script>
+
 
 </body>
 

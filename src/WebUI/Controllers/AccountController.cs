@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
+using Microsoft.JSInterop;
 using System.Text;
 using WebUI.Models.Accounts.Login;
 using WebUI.Models.Accounts.Register;
@@ -8,13 +10,10 @@ namespace WebUI.Controllers
 {
     public class AccountController : BaseController
     {
-        HttpClient _httpClient;
         IConfiguration _configuration;
 
-        public AccountController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public AccountController()
         {
-            _httpClient = httpClientFactory.CreateClient();
-            _httpClient.BaseAddress= new Uri(configuration["ApiBaseURL"]);
         }
 
         public IActionResult Forgot()
@@ -41,6 +40,8 @@ namespace WebUI.Controllers
                     HttpContext.Session.SetString("SMS.Auth.Token", token.AccessToken);
 
                 }
+           
+                NotifyUI("Başarılı","Giriş Başararılı",ResponseType.success);
 
             }
             catch (Exception ex)
@@ -53,6 +54,10 @@ namespace WebUI.Controllers
         }
         public IActionResult Logout()
         {
+            string? token = HttpContext?.Session?.GetString("SMS.Auth.Token");
+            if(token is not null)
+                HttpContext.Session.Remove("SMS.Auth.Token");
+            
             return View();
         }
         public IActionResult Register()

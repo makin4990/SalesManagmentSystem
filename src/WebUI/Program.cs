@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using WebUI.Helpers;
@@ -9,35 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddScoped<ClientProxyHelper>();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromHours(8); // Adjust the session timeout as needed
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//}).AddJwtBearer(options =>
-//                        {
-//                            options.SaveToken = true;
-//                            options.RequireHttpsMetadata = false;
-//                            options.TokenValidationParameters = new TokenValidationParameters()
-//                            {
-//                                ValidateIssuer = true,
-//                                ValidateAudience = true,
-//                                ValidAudience = builder.Configuration["TokenOptions:Audience"],
-//                                ValidIssuer = builder.Configuration["TokenOptions:Audience"],
-//                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenOptions:Audience"]))
-//                            };
-//                        });
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("Admin", options =>
     {
@@ -66,6 +48,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         //    }
         //};
 
+    }).AddCookie(opt=>
+    {
+        opt.AccessDeniedPath = "Account/login";
+        opt.LoginPath = "Account/login";
+        opt.LogoutPath= null;
     });
 
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
@@ -94,25 +81,26 @@ app.UseRouting();
 app.UseSession();
 app.Use(async (context, next) =>
 {
-    if (context.Request.Path != "/Account/Login" && context.Request.Path != "/Account/Register")
+    try
     {
         string? token = context?.Session?.GetString("SMS.Auth.Token");
-        if (!string.IsNullOrEmpty(token))
-        {
-            context.Request.Headers.Add("Authorization", "Bearer " + token);
-        }
-        else
-        {
+        context.Request.Headers.Add("Authorization", "Bearer " + token);
+        await next();
+       if(context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
             context.Response.Redirect("/Account/Login");
-            return;
-        }
+
     }
-    await next();
+    catch (Exception)
+    {
+        return;
+    }
+
 });
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+//app.UseNToastNotify();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

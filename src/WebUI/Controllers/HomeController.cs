@@ -18,6 +18,7 @@ namespace WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //NotifyUI("Welcome to home page", ResponseType.info);
             return View();
         }
 
