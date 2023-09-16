@@ -11,6 +11,7 @@ using Serilog.Context;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using WebAPI.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,12 +54,14 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 builder.Services.AddControllers(options =>
-{
-    //options.Filters.Add<ValidationFilter>();
-    options.Filters.Add<RolePermissionFilter>();
-})
-    //.AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
-    .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
+                {
+                    //options.Filters.Add<ValidationFilter>();
+                    options.Filters.Add<RolePermissionFilter>();
+                }).AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                })
+                .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

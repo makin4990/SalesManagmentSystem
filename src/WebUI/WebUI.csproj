@@ -14,5 +14,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.10" />
   </ItemGroup>
+ 
+  <ItemGroup>
+    <ProjectReference Include="..\..\CoreFramework\CoreFramework.Application\CoreFramework.Application.csproj" />
+  </ItemGroup>
 
 </Project>

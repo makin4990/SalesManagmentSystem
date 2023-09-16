@@ -5,6 +5,7 @@ using Application.Features.Auths.Commands.PasswordReset;
 using Application.Features.Auths.Commands.RefreshTokenLogin;
 using Application.Features.Auths.Commands.VerifyResetToken;
 using Application.Features.Auths.Dtos;
+using CoreFramework.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,8 +24,17 @@ public class AuthController : BaseController
     [HttpPost("[action]")]
     public async Task<IActionResult> Login(LoginUserCommand loginUserCommandRequest)
     {
-        var response = await _mediator.Send(loginUserCommandRequest);
-        return Ok(response);
+        try
+        {
+            IDataResponse<LoginUserDto> response = await _mediator.Send(loginUserCommandRequest);
+            return Ok(response);
+
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 
     [HttpPost("[action]")]
