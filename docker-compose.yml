@@ -62,6 +62,7 @@ services:
       context: src
       dockerfile: ../dockerfile.writeapi
     restart: always
+    environment:
       ASPNETCORE_ENVIRONMENT: Prod
     networks:
       - postgres
