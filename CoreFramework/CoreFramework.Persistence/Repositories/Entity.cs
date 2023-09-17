@@ -3,8 +3,8 @@
 public class Entity
 {
     public int Id { get; set; }
-    public DateTime StartedAt { get; set; }
-    public DateTime? EndedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public Entity()
     {
@@ -18,7 +18,7 @@ public class Entity
     public Entity(int id, DateTime startedAt, DateTime? endedAt): this()
     {
         Id = id;
-        StartedAt = startedAt;
-        EndedAt = endedAt;
+        CreatedAt = startedAt;
+        UpdatedAt = endedAt;
     }
 }
