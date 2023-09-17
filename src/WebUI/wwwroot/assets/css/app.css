@@ -5,7 +5,8 @@ Version: 6.0.0
 Author: Techzaa
 File: Main Css File
 */
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
+/*@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");*/
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,900&family=Open+Sans:wght@300;400;500;600&display=swap');
 :root {
   --tz-logo-lg-height: 18px;
   --tz-logo-sm-height: 22px;
@@ -167,7 +168,7 @@ html[data-bs-theme=dark][data-topbar-color=dark] {
   --tz-dark-border-subtle: #adb5bd;
   --tz-white-rgb: 255, 255, 255;
   --tz-black-rgb: 0, 0, 0;
-  --tz-font-sans-serif: "Lato", sans-serif;
+  --tz-font-sans-serif: "Open Sans", sans-serif;
   --tz-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --tz-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --tz-body-font-family: var(--tz-font-sans-serif);

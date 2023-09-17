@@ -167,7 +167,7 @@ html[data-bs-theme=dark][data-topbar-color=dark] {
   --tz-dark-border-subtle: #adb5bd;
   --tz-white-rgb: 255, 255, 255;
   --tz-black-rgb: 0, 0, 0;
-  --tz-font-sans-serif: "Lato", sans-serif;
+  --tz-font-sans-serif: "Open Sans", sans-serif;
   --tz-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --tz-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --tz-body-font-family: var(--tz-font-sans-serif);
