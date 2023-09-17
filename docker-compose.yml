@@ -1,77 +1,24 @@
 version: '3.8'
-
 services:
-  postgres:
-    container_name: postgres_container
-    image: postgis/postgis
-    environment:
-      POSTGRES_USER: makin19
-      POSTGRES_PASSWORD: Muhammed1453
-      PGDATA: /data/postgres
-    volumes:
-       - postgres:/data/postgres
-    ports:
-      - "5432:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
-
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: makin19
-      PGADMIN_DEFAULT_PASSWORD: makin19
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-       - pgadmin:/var/lib/pgadmin
-
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    networks:
-      - postgres
-    restart: unless-stopped
-  portainer:
-    image: portainer/portainer-ce:2.0.0
-    command: -H unix:///var/run/docker.sock
-    environment:
-      - ADMIN_PASSWORD=Muhammed09
-      - ADMIN_FIRSTNAME=Muhammed
-      - ADMIN_LASTNAME=AKIN
-      - ADMIN_USERNAME=makin19
-    ports:
-      - "8000:8000"
-      - "9000:9000"
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-  
   s_webapi:
     build:
       context: ./
-      dockerfile: ./Dockerfile.api
+      dockerfile: ./src/WebAPI/Dockerfile
     restart: always
     ports:
-      - "5001:5001"
+      - "5008:5008"
     networks:
-      - postgres
+      - localnetwork
 
   s_webui:
     build:
       context: ./
-      dockerfile: ./Dockerfile.ui
+      dockerfile: ./src/WebUI/Dockerfile
     restart: always
     ports:
-      - "5002:5002"
+      - "5009:5009"
     networks:
-      - postgres
+      - localnetwork
 
 networks:
-  postgres:
-    driver: bridge
-
-volumes:
-    postgres:
-    pgadmin:
-    portainer_data:
+  localnetwork:
