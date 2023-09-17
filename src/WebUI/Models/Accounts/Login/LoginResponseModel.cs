@@ -2,8 +2,15 @@
 {
     public class LoginResponseModel
     {
-        public TokenModel Token { get; set; }
+        public Data Data { get; set; }
         public string Message { get; set; }
+        public bool Success { get; set; }
+
+    }
+
+    public class Data
+    {
+        public TokenModel Token { get; set; }
     }
 
 }

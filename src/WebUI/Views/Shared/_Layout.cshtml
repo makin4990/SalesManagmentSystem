@@ -790,9 +790,6 @@
     <!-- App js -->
     <script src="/assets/js/app.min.js"></script>
 
-@* 
-    <script src="/assets/vendor/jquery-toast-plugin/jquery.toast.min.js"></script>
-    <script src="/assets/vendor/jquery-toast-plugin/jquery.toast.min.css"></script> *@
 
     @if (TempData["Message"] != null)
     {
@@ -801,6 +798,7 @@
                 var header = '@TempData["Header"]';
                 var message = '@TempData["Message"]';
                 var type = '@TempData["Type"]';
+                console.log(type);
                 var position = '@TempData["Position"]';
                 $.NotificationApp.send(header, message, 'top-right', 'rgba(0,0,0,0)', type);
 

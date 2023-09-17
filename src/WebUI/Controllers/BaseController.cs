@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using WebUI.Helpers;
 
 namespace WebUI.Controllers
@@ -17,24 +18,8 @@ namespace WebUI.Controllers
         {
             TempData["Header"] = header;
             TempData["Message"] = message;
-            switch (type)
-            {
-                case ResponseType.success:
-                    TempData["Type"] = nameof(type);
-                    break;
-                case ResponseType.info:
-                    TempData["Type"] = nameof(type);
-                    break;
-                case ResponseType.warning:
-                    TempData["Type"] = nameof(type);
-                    break;
-                case ResponseType.error:
-                    TempData["Type"] = nameof(type);
-                    break;
-                default:
-                    TempData["Type"] = nameof(type);
-                    break;
-            }
+            TempData["Type"] = Enum.GetName(typeof(ResponseType), type);
+        
         }
     }
 

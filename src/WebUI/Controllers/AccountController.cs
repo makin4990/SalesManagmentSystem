@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
 using System.Text;
 using WebUI.Models.Accounts.Login;
 using WebUI.Models.Accounts.Register;
+using CoreFramework.Application.Responses;
+
 
 namespace WebUI.Controllers
 {
@@ -29,19 +28,17 @@ namespace WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
-            LoginResponseModel loginResponse = await _client.PostAsync<LoginResponseModel>(@"api/Auth/login", userLoginDto);
             try
             {
+                var response = await _client.PostAsync<LoginResponseModel>(@"api/Auth/login", userLoginDto);
+                
+                if (!response.Success)
+                    NotifyUI("Hata", "Kullanıcı adı veya parola hatalı", ResponseType.error);
 
-                if (loginResponse.Token is not null)
-                {
-                    var token = loginResponse.Token;
+                var token = response.Data.Token;
+                HttpContext.Session.SetString("SMS.Auth.Token", token.AccessToken);
 
-                    HttpContext.Session.SetString("SMS.Auth.Token", token.AccessToken);
-
-                }
-           
-                NotifyUI("Başarılı","Giriş Başararılı",ResponseType.success);
+                NotifyUI("Başarılı", "Giriş Başararılı", ResponseType.success);
 
             }
             catch (Exception ex)
@@ -50,14 +47,14 @@ namespace WebUI.Controllers
             }
 
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Logout()
         {
             string? token = HttpContext?.Session?.GetString("SMS.Auth.Token");
-            if(token is not null)
+            if (token is not null)
                 HttpContext.Session.Remove("SMS.Auth.Token");
-            
+
             return View();
         }
         public IActionResult Register()
@@ -71,9 +68,9 @@ namespace WebUI.Controllers
             try
             {
                 var result = await _client.PostAsync<RegisterUserResponse>(@"api/users", registerUserDto);
-                if(result is not null)
+                if (result is not null)
                 {
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
 
                 }
                 return View(registerUserDto);
@@ -83,7 +80,7 @@ namespace WebUI.Controllers
 
                 throw ex;
             }
-            
+
         }
     }
 }

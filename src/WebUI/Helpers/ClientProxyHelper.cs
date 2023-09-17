@@ -2,7 +2,7 @@
 
 namespace WebUI.Helpers
 {
-    public  class ClientProxyHelper
+    public class ClientProxyHelper
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
@@ -27,11 +27,20 @@ namespace WebUI.Helpers
 
         public async Task<T> PostAsync<T>(string endpoint, object data)
         {
-            SetTokenToHeader();
-            var response = await _httpClient.PostAsJsonAsync(endpoint, data);
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                SetTokenToHeader();
+                var response = await _httpClient.PostAsJsonAsync(endpoint, data);
+                response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<T>();
+                return await response.Content.ReadFromJsonAsync<T>();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         private string GetTokenFromCookies()

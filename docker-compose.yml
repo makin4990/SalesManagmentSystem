@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  s_webapi:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.api
+    restart: always
+    ports:
+      - "5001:80"
+    networks:
+      - postgres
+
+  s_webui:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.ui
+    restart: always
+    ports:
+      - "5002:80"
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
