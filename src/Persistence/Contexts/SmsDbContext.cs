@@ -9,10 +9,11 @@ namespace Persistence.Contexts
     public class SmsDbContext : IdentityDbContext<User,Role,int>
     {
         protected IConfiguration Configuration { get; set; }
-        //public DbSet<User> Users { get; set; }
-        //public DbSet<OperationClaim> OperationClaims { get; set; }
-        //public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
-        //public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles{ get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories{ get; set; }
 
 
         public SmsDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
@@ -27,10 +28,14 @@ namespace Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<Location>(a =>
-            //{
-            //    a.ToTable("Locations").HasKey(k => k.Id);
-            //});
+
+            modelBuilder.Entity<Category>(a =>
+            {
+                a.ToTable("Categories").HasKey(k => k.Id);
+                a.HasMany(p => p.Products)
+                 .WithOne(c => c.Category)
+                 .HasForeignKey(fk=> fk.CategoryId);
+            });
 
         }
     }
