@@ -3,22 +3,23 @@ services:
   s_webapi:
     build:
       context: ./
-      dockerfile: ./src/WebAPI/Dockerfile
+      dockerfile: ./Dockerfile.api
     restart: always
     ports:
-      - "5008:5008"
+      - "5001:80"
     networks:
-      - localnetwork
+      - postgres
 
   s_webui:
     build:
       context: ./
-      dockerfile: ./src/WebUI/Dockerfile
+      dockerfile: ./Dockerfile.ui
     restart: always
     ports:
-      - "5009:5009"
+      - "5002:80"
     networks:
-      - localnetwork
+      - postgres
 
 networks:
-  localnetwork:
+  postgres:
+    driver: bridge
