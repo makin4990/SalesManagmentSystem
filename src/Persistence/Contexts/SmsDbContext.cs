@@ -14,6 +14,8 @@ namespace Persistence.Contexts
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories{ get; set; }
+        public DbSet<AppointmentProduct> AppointmentProducts { get; set; }
+
 
 
         public SmsDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
@@ -35,6 +37,20 @@ namespace Persistence.Contexts
                 a.HasMany(p => p.Products)
                  .WithOne(c => c.Category)
                  .HasForeignKey(fk=> fk.CategoryId);
+            });
+
+            modelBuilder.Entity<AppointmentProduct>(a =>
+            {
+                a.HasKey(k => k.Id);
+
+                a.HasOne(p => p.Product)
+                .WithMany(ap => ap.Appointments)
+                .HasForeignKey(fk => fk.ProductId);
+
+                a.HasOne(ap => ap.Appointment)
+                .WithMany(p => p.Products)
+                .HasForeignKey(fk => fk.AppointmentId);
+
             });
 
         }

@@ -3,6 +3,10 @@ using CoreFramework.Persistence.Repositories;
 namespace Domain.Entities;
 public class Appointment:Entity
 {
+    public Appointment()
+    {
+        Products = new HashSet<AppointmentProduct>();
+    }
     public int Id {get; set;}
     public string Company {get; set;}
     public string ContactName {get; set;}
@@ -18,4 +22,6 @@ public class Appointment:Entity
     public DateTime? CreatedAt {get; set;}
     public DateTime? UpdatedAt {get; set;}
     public int Statu {get; set;}
+    public virtual ICollection<AppointmentProduct> Products { get; set; }
+
 }
